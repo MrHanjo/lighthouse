@@ -83,9 +83,6 @@ gulp.task('chromeManifest', () => {
     buildnumber: false,
     background: {
       target: 'scripts/lighthouse-ext-background.js',
-      exclude: [
-        'scripts/chromereload.js',
-      ],
     },
   };
   return gulp.src('app/manifest.json')
@@ -157,7 +154,6 @@ gulp.task('browserify-lighthouse', () => {
 gulp.task('browserify-other', () => {
   return gulp.src([
     'app/src/popup.js',
-    'app/src/chromereload.js',
   ], {read: false})
     .pipe(tap(file => {
       let bundle = browserify(file.path); // , {debug: true}); // for sourcemaps
