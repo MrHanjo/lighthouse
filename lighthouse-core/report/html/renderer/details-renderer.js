@@ -57,7 +57,7 @@ class DetailsRenderer {
         return this._renderFilmstrip(/** @type {FilmstripDetails} */ (details));
       case 'table':
         // @ts-ignore - TODO(bckenny): Fix type hierarchy
-        return this._renderOpportunityTable(details);
+        return this._renderTable(/** @type {TableDetailsJSON} */ (details));
       case 'code':
         return this._renderCode(/** @type {StringDetailsJSON} */ (details));
       case 'node':
@@ -68,7 +68,7 @@ class DetailsRenderer {
           /** @type {CRCDetailsJSON} */ (details));
       case 'opportunity':
         // @ts-ignore - TODO(bckenny): Fix type hierarchy
-        return this._renderTable(/** @type {OpportunityDetails} */ (details));
+        return this._renderOpportunityTable(details);
       default: {
         throw new Error(`Unknown type: ${details.type}`);
       }
