@@ -50,16 +50,17 @@ declare global {
       granularity?: number;
     }
 
+    // TODO(bckenny): move these to byte-efficiency-audit.js now that we can import typedefs.
     export interface ByteEfficiencyProduct {
-      results: Array<ByteEfficiencyResult>;
-      headings: Array<Audit.Heading>;
+      items: Array<ByteEfficiencyItem>;
+      headings: Result.Audit.OpportunityDetails['headings'];
       displayValue?: string;
       explanation?: string;
       warnings?: string[];
     }
 
-    export interface ByteEfficiencyResult {
-      url: string | DetailsRendererCodeDetailJSON;
+    export interface ByteEfficiencyItem extends Result.Audit.OpportunityDetailsItem {
+      url: string;
       wastedBytes: number;
       totalBytes: number;
       wastedPercent?: number;

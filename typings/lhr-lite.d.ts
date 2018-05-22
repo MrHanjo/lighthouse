@@ -91,9 +91,12 @@ declare global {
         }
 
         export interface ColumnHeading {
+          /** The property key name within DetailsItem being described. */
           key: string;
+          /** Readable text label of the field. */
           label: string;
-          valueType: 'url' | 'timespanMs' | 'bytes';
+          // TODO(bckenny): should be just string and let lhr be more specific?
+          valueType: 'url' | 'timespanMs' | 'bytes' | 'thumbnail';
         }
 
         export interface WastedBytesDetailsItem {

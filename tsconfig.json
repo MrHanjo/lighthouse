@@ -12,7 +12,7 @@
       "./typings"
     ],
 
-    "diagnostics": true
+    "diagnostics": true,
   },
   "include": [
     // TODO(bckenny): unnecessary workaround until https://github.com/Microsoft/TypeScript/issues/24062
