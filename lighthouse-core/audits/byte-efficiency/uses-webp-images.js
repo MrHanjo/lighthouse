@@ -46,7 +46,7 @@ class UsesWebPImages extends ByteEfficiencyAudit {
   static audit_(artifacts) {
     const images = artifacts.OptimizedImages;
 
-    /** @type {Array<{url: string, fromProtocol: boolean, isCrossOrigin: boolean, totalBytes: number, wastedBytes: number}>} */
+    /** @type {Array<LH.Audit.ByteEfficiencyItem>} */
     const items = [];
     const warnings = [];
     for (const image of images) {

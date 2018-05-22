@@ -82,7 +82,7 @@ class UsesResponsiveImages extends ByteEfficiencyAudit {
 
     /** @type {string[]} */
     const warnings = [];
-    /** @type {Map<LH.Audit.ByteEfficiencyItem['url'], LH.Audit.ByteEfficiencyItem>} */
+    /** @type {Map<string, LH.Audit.ByteEfficiencyItem>} */
     const resultsMap = new Map();
     images.forEach(image => {
       // TODO: give SVG a free pass until a detail per pixel metric is available

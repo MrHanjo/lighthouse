@@ -99,7 +99,6 @@ class UnusedJavaScript extends ByteEfficiencyAudit {
       scriptsByUrl.set(script.url, scripts);
     }
 
-    /** @type {Array<LH.Audit.ByteEfficiencyItem>} */
     const items = [];
     for (const [url, scripts] of scriptsByUrl.entries()) {
       const networkRecord = networkRecords.find(record => record.url === url);

@@ -114,7 +114,7 @@ class UnusedBytes extends Audit {
     options = Object.assign({includeLoad: true}, options);
 
     const simulationBeforeChanges = simulator.simulate(graph);
-    /** @type {Map<LH.Audit.ByteEfficiencyItem['url'], LH.Audit.ByteEfficiencyItem>} */
+    /** @type {Map<string, LH.Audit.ByteEfficiencyItem>} */
     const resultsByUrl = new Map();
     for (const result of results) {
       resultsByUrl.set(result.url, result);

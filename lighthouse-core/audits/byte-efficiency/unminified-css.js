@@ -100,7 +100,6 @@ class UnminifiedCSS extends ByteEfficiencyAudit {
     const content = stylesheet.content;
     const totalTokenLength = UnminifiedCSS.computeTokenLength(content);
 
-    /** @type {LH.Audit.ByteEfficiencyItem['url']} */
     let url = stylesheet.header.sourceURL;
     if (!url || url === pageUrl) {
       const contentPreview = UnusedCSSRules.determineContentPreview(stylesheet.content);
