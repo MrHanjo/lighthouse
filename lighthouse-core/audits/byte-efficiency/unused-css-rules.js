@@ -147,7 +147,7 @@ class UnusedCSSRules extends ByteEfficiencyAudit {
 
   /**
    * @param {LH.Artifacts} artifacts
-   * @return {Promise<LH.Audit.ByteEfficiencyProduct>}
+   * @return {Promise<ByteEfficiencyAudit.ByteEfficiencyProduct>}
    */
   static audit_(artifacts) {
     const styles = artifacts.CSSUsage.stylesheets;

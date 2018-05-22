@@ -74,7 +74,7 @@ class UsesResponsiveImages extends ByteEfficiencyAudit {
 
   /**
    * @param {LH.Artifacts} artifacts
-   * @return {LH.Audit.ByteEfficiencyProduct}
+   * @return {ByteEfficiencyAudit.ByteEfficiencyProduct}
    */
   static audit_(artifacts) {
     const images = artifacts.ImageUsage;

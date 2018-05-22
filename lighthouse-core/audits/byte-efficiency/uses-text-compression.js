@@ -33,7 +33,7 @@ class ResponsesAreCompressed extends ByteEfficiencyAudit {
 
   /**
    * @param {LH.Artifacts} artifacts
-   * @return {LH.Audit.ByteEfficiencyProduct}
+   * @return {ByteEfficiencyAudit.ByteEfficiencyProduct}
    */
   static audit_(artifacts) {
     const uncompressedResponses = artifacts.ResponseCompression;

@@ -72,7 +72,7 @@ class UnminifiedJavaScript extends ByteEfficiencyAudit {
   /**
    * @param {LH.Artifacts} artifacts
    * @param {Array<LH.WebInspector.NetworkRequest>} networkRecords
-   * @return {LH.Audit.ByteEfficiencyProduct}
+   * @return {ByteEfficiencyAudit.ByteEfficiencyProduct}
    */
   static audit_(artifacts, networkRecords) {
     /** @type {Array<LH.Audit.ByteEfficiencyItem>} */

@@ -18,6 +18,15 @@ const WASTED_MS_FOR_AVERAGE = 300;
 const WASTED_MS_FOR_POOR = 750;
 
 /**
+ * @typedef {object} ByteEfficiencyProduct
+ * @property {Array<LH.Audit.ByteEfficiencyItem>} items
+ * @property {LH.Result.Audit.OpportunityDetails['headings']} headings
+ * @property {string} [displayValue]
+ * @property {string} [explanation]
+ * @property {Array<string>} [warnings]
+ */
+
+/**
  * @overview Used as the base for all byte efficiency audits. Computes total bytes
  *    and estimated time saved. Subclass and override `audit_` to return results.
  */
@@ -159,7 +168,7 @@ class UnusedBytes extends Audit {
   }
 
   /**
-   * @param {LH.Audit.ByteEfficiencyProduct} result
+   * @param {ByteEfficiencyProduct} result
    * @param {Node} graph
    * @param {Simulator} simulator
    * @return {LH.Audit.Product}
@@ -202,7 +211,7 @@ class UnusedBytes extends Audit {
    * @param {LH.Artifacts} artifacts
    * @param {Array<LH.WebInspector.NetworkRequest>} networkRecords
    * @param {LH.Audit.Context} context
-   * @return {LH.Audit.ByteEfficiencyProduct|Promise<LH.Audit.ByteEfficiencyProduct>}
+   * @return {ByteEfficiencyProduct|Promise<ByteEfficiencyProduct>}
    */
   static audit_(artifacts, networkRecords, context) {
     throw new Error('audit_ unimplemented');

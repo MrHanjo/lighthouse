@@ -245,6 +245,8 @@ class DetailsRenderer {
   }
 
   /**
+   * TODO(bckenny): migrate remaining table rendering to this function, then rename
+   * back to _renderTable and replace the original.
    * @param {OpportunityDetails} details
    * @return {Element}
    */
