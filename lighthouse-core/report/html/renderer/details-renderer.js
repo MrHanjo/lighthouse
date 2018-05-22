@@ -299,7 +299,7 @@ class DetailsRenderer {
           }
           case 'bytes': {
             const numValue = /** @type {number} */ (value);
-            itemElement = this._renderBytes({value: numValue});
+            itemElement = this._renderBytes({value: numValue, granularity: 1});
             break;
           }
           case 'thumbnail': {
