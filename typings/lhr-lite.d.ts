@@ -103,12 +103,14 @@ declare global {
           url: string;
           wastedBytes?: number;
           totalBytes?: number;
+          [p: string]: number | boolean | string | undefined;
         }
 
         export interface WastedTimeDetailsItem {
           url: string;
           wastedMs: number;
           totalBytes?: number;
+          [p: string]: number | boolean | string | undefined;
         }
       }
     }

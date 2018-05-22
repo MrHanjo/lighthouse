@@ -134,7 +134,6 @@ class UnusedCSSRules extends ByteEfficiencyAudit {
    * @return {LH.Audit.ByteEfficiencyItem}
    */
   static mapSheetToResult(stylesheetInfo, pageUrl) {
-    /** @type {LH.Audit.ByteEfficiencyItem['url']} */
     let url = stylesheetInfo.header.sourceURL;
     if (!url || url === pageUrl) {
       const contentPreview = UnusedCSSRules.determineContentPreview(stylesheetInfo.content);
@@ -142,7 +141,8 @@ class UnusedCSSRules extends ByteEfficiencyAudit {
     }
 
     const usage = UnusedCSSRules.computeUsage(stylesheetInfo);
-    return Object.assign({url}, usage);
+    const result = {url}; // Assign to temporary to keep tsc happy about index signature.
+    return Object.assign(result, usage);
   }
 
   /**

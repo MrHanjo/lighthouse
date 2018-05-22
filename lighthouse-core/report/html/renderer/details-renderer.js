@@ -57,7 +57,7 @@ class DetailsRenderer {
         return this._renderFilmstrip(/** @type {FilmstripDetails} */ (details));
       case 'table':
         // @ts-ignore - TODO(bckenny): Fix type hierarchy
-        return this._renderTable(/** @type {TableDetailsJSON} */ (details));
+        return this._renderOpportunityTable(details);
       case 'code':
         return this._renderCode(/** @type {StringDetailsJSON} */ (details));
       case 'node':

@@ -88,10 +88,7 @@ declare global {
           wastedBytes?: number;
           totalBytes?: number;
           wastedMs?: number;
-          wastedPercent?: number;
-          fromProtocol?: boolean;
-          isCrossOrigin?: boolean;
-          requestStartTime?: number;
+          [p: string]: number | boolean | string | undefined;
         }
 
         export interface OpportunityDetails extends ResultLite.Audit.OpportunityDetails {
