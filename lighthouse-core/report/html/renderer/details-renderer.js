@@ -280,6 +280,7 @@ class DetailsRenderer {
         const valueType = heading.valueType;
         let itemElement;
 
+        // TODO(bckenny): as we add more table types, split out into _renderTableItem fn.
         switch (valueType) {
           case 'url': {
             // Fall back to <pre> rendering if not actually a URL.
