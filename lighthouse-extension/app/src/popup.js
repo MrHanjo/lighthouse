@@ -3,9 +3,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
-// eslint-disable-next-line spaced-comment
-/// <reference types="chrome" />
 'use strict';
+
+/** @typedef {typeof import('./lighthouse-ext-background.js')} BackgroundPage */
 
 /**
  * Error strings that indicate a problem in how Lighthouse was run, not in
@@ -32,10 +32,7 @@ const MAX_ISSUE_ERROR_LENGTH = 60;
 
 const subpageVisibleClass = 'subpage--visible';
 
-const getBackgroundPage = new Promise((resolve, reject) => {
-  chrome.runtime.getBackgroundPage(resolve);
-});
-
+/** @type {?URL} */
 let siteURL = null;
 
 function getLighthouseVersion() {
@@ -47,17 +44,38 @@ function getLighthouseCommitHash() {
 }
 
 function getChromeVersion() {
+  // @ts-ignore
   return /Chrome\/([0-9.]+)/.exec(navigator.userAgent)[1];
 }
 
 function showRunningSubpage() {
-  document.querySelector('.status').classList.add(subpageVisibleClass);
+  find('.status', document).classList.add(subpageVisibleClass);
 }
 
 function hideRunningSubpage() {
-  document.querySelector('.status').classList.remove(subpageVisibleClass);
+  find('.status', document).classList.remove(subpageVisibleClass);
 }
 
+/**
+ * Guaranteed context.querySelector. Always returns an element or throws if
+ * nothing matches query.
+ * @param {string} query
+ * @param {ParentNode} context
+ * @return {HTMLElement}
+ */
+function find(query, context) {
+  /** @type {?HTMLElement} */
+  const result = context.querySelector(query);
+  if (result === null) {
+    throw new Error(`query ${query} not found`);
+  }
+  return result;
+}
+
+/**
+ * @param {Error} err
+ * @return {HTMLAnchorElement}
+ */
 function buildReportErrorLink(err) {
   const issueBody = `
 **Lighthouse Version**: ${getLighthouseVersion()}
@@ -79,24 +97,33 @@ ${err.stack}
 
   const reportErrorEl = document.createElement('a');
   reportErrorEl.className = 'button button--report-error';
-  reportErrorEl.href = url;
+  reportErrorEl.href = url.href;
   reportErrorEl.textContent = 'Report Error';
   reportErrorEl.target = '_blank';
 
   return reportErrorEl;
 }
 
+/**
+ * @param {[string, string, string]} status
+ */
 function logStatus([, message, details]) {
   if (typeof details === 'string' && details.length > 110) {
     // Grab 100 characters and up to the next comma, ellipsis for the rest
     const hundredPlusChars = details.replace(/(.{100}.*?),.*/, '$1…');
     details = hundredPlusChars;
   }
-  document.querySelector('.status__msg').textContent = message;
-  const statusDetailsMessageEl = document.querySelector('.status__detailsmsg');
+  find('.status__msg', document).textContent = message;
+  const statusDetailsMessageEl = find('.status__detailsmsg', document);
   statusDetailsMessageEl.textContent = details;
 }
 
+/**
+ * @param {string} text
+ * @param {string} id
+ * @param {boolean} isChecked
+ * @return {HTMLLIElement}
+ */
 function createOptionItem(text, id, isChecked) {
   const input = document.createElement('input');
   input.setAttribute('type', 'checkbox');
@@ -116,22 +143,21 @@ function createOptionItem(text, id, isChecked) {
 
 /**
  * Click event handler for Generate Report button.
- * @param {!Window} background Reference to the extension's background page.
- * @param {{selectedCategories: !Object<boolean>, useDevTools: boolean}} settings
+ * @param {BackgroundPage} background Reference to the extension's background page.
+ * @param {{selectedCategories: Array<string>, useDevTools: boolean}} settings
  */
 async function onGenerateReportButtonClick(background, settings) {
   showRunningSubpage();
 
-  const feedbackEl = document.querySelector('.feedback');
+  const feedbackEl = find('.feedback', document);
   feedbackEl.textContent = '';
 
   const {selectedCategories, useDevTools} = settings;
+  // TODO(bckenny): make flags workable as a type.
+  const flags = /** @type {LH.Flags} */ ({throttlingMethod: useDevTools ? 'devtools' : 'simulate'});
 
   try {
-    await background.runLighthouseInExtension({
-      restoreCleanState: true,
-      flags: {throttlingMethod: useDevTools ? 'devtools' : 'simulate'},
-    }, selectedCategories);
+    await background.runLighthouseInExtension({flags}, selectedCategories);
 
     // Close popup once report is opened in a new tab
     window.close();
@@ -164,8 +190,8 @@ async function onGenerateReportButtonClick(background, settings) {
 /**
  * Generates a document fragment containing a list of checkboxes and labels
  * for the categories.
- * @param {!Window} background Reference to the extension's background page.
- * @param {!Array<string>} selectedCategories
+ * @param {BackgroundPage} background Reference to the extension's background page.
+ * @param {Array<string>} selectedCategories
  */
 function generateOptionsList(background, selectedCategories) {
   const frag = document.createDocumentFragment();
@@ -175,85 +201,84 @@ function generateOptionsList(background, selectedCategories) {
     frag.appendChild(createOptionItem(category.title, category.id, isChecked));
   });
 
-  const optionsList = document.querySelector('.options__list');
+  const optionsList = find('.options__list', document);
   optionsList.appendChild(frag);
 }
 
 /**
  * Initializes the popup's state and UI elements.
- * @param {!Window} background Reference to the extension's background page.
  */
-function initPopup() {
-  getBackgroundPage.then(background => {
-    // To prevent visual hiccups when opening the popup, we default the subpage
-    // to the "running" view and switch to the default view once we're sure
-    // Lighthouse is not already auditing the page. This change was necessary
-    // now that fetching the background event page is async.
-    if (background.isRunning()) {
-      showRunningSubpage();
-    } else {
-      hideRunningSubpage();
-    }
-
-    background.listenForStatus(logStatus);
-
-    // generate checkboxes from saved settings
-    background.loadSettings().then(settings => {
-      generateOptionsList(background, settings.selectedCategories);
-      document.querySelector('.setting-disable-extensions').checked = settings.disableExtensions;
-      document.querySelector('#lantern-checkbox').checked = !settings.useDevTools;
-    });
-
-    // bind throttling control button
-    const lanternCheckbox = document.getElementById('lantern-checkbox');
-    lanternCheckbox.addEventListener('change', async () => {
-      const settings = await background.loadSettings();
-      settings.useDevTools = !lanternCheckbox.checked;
-      background.saveSettings(settings);
-    });
-
-    // bind Generate Report button
-    const generateReportButton = document.getElementById('generate-report');
-    generateReportButton.addEventListener('click', () => {
-      background.loadSettings().then(settings => {
-        onGenerateReportButtonClick(background, settings);
-      });
-    });
-
-    // bind View Options button
-    const generateOptionsEl = document.getElementById('configure-options');
-    const optionsEl = document.querySelector('.options');
-    generateOptionsEl.addEventListener('click', () => {
-      optionsEl.classList.add(subpageVisibleClass);
-    });
-
-    // bind Save Options button
-    const okButton = document.getElementById('ok');
-    okButton.addEventListener('click', () => {
-      // Save settings when options page is closed.
-      const selectedCategories = Array.from(optionsEl.querySelectorAll(':checked'))
-          .map(input => input.value);
-      const disableExtensions = document.querySelector('.setting-disable-extensions').checked;
-
-      background.saveSettings({
-        useDevTools: !lanternCheckbox.checked,
-        selectedCategories,
-        disableExtensions,
-      });
-
-      optionsEl.classList.remove(subpageVisibleClass);
-    });
-  });
-
+async function initPopup() {
   chrome.tabs.query({active: true, lastFocusedWindow: true}, function(tabs) {
     if (tabs.length === 0) {
       return;
     }
 
-    siteURL = new URL(tabs[0].url);
+    siteURL = new URL(tabs[0].url || '');
 
     // Show the user what URL is going to be tested.
-    document.querySelector('header h2').textContent = siteURL.origin;
+    find('header h2', document).textContent = siteURL.origin;
+  });
+
+  /** @type {BackgroundPage} */
+  const background = await new Promise(resolve => chrome.runtime.getBackgroundPage(resolve));
+
+  // To prevent visual hiccups when opening the popup, we default the subpage
+  // to the "running" view and switch to the default view once we're sure
+  // Lighthouse is not already auditing the page. This change was necessary
+  // now that fetching the background event page is async.
+  if (background.isRunning()) {
+    showRunningSubpage();
+  } else {
+    hideRunningSubpage();
+  }
+
+  background.listenForStatus(logStatus);
+
+  // generate checkboxes from saved settings
+  background.loadSettings().then(settings => {
+    generateOptionsList(background, settings.selectedCategories);
+    const lanternCheck = /** @type {HTMLInputElement} */ (find('#lantern-checkbox', document));
+    lanternCheck.checked = !settings.useDevTools;
+  });
+
+  // bind throttling control button
+  const lanternCheckbox = /** @type {HTMLInputElement} */ (find('lantern-checkbox', document));
+  lanternCheckbox.addEventListener('change', async () => {
+    const settings = await background.loadSettings();
+    settings.useDevTools = !lanternCheckbox.checked;
+    background.saveSettings(settings);
+  });
+
+  // bind Generate Report button
+  const generateReportButton = find('generate-report', document);
+  generateReportButton.addEventListener('click', () => {
+    background.loadSettings().then(settings => {
+      onGenerateReportButtonClick(background, settings);
+    });
+  });
+
+  // bind View Options button
+  const generateOptionsEl = find('configure-options', document);
+  const optionsEl = find('.options', document);
+  generateOptionsEl.addEventListener('click', () => {
+    optionsEl.classList.add(subpageVisibleClass);
+  });
+
+  // bind Save Options button
+  const okButton = find('ok', document);
+  okButton.addEventListener('click', () => {
+    // Save settings when options page is closed.
+    const checkboxes = /** @type {NodeListOf<HTMLInputElement>} */
+      (optionsEl.querySelectorAll(':checked'));
+    const selectedCategories = Array.from(checkboxes).map(input => input.value);
+
+    background.saveSettings({
+      useDevTools: !lanternCheckbox.checked,
+      selectedCategories,
+    });
+
+    optionsEl.classList.remove(subpageVisibleClass);
   });
 }
 
