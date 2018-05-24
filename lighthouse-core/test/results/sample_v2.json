@@ -788,18 +788,7 @@
       ],
       "details": {
         "type": "opportunity",
-        "headings": [
-          {
-            "key": "url",
-            "valueType": "url",
-            "label": "URL"
-          },
-          {
-            "key": "wastedMs",
-            "valueType": "timespanMs",
-            "label": "Potential Savings"
-          }
-        ],
+        "headings": [],
         "items": [],
         "overallSavingsMs": 0
       }
@@ -817,18 +806,7 @@
       ],
       "details": {
         "type": "opportunity",
-        "headings": [
-          {
-            "key": "url",
-            "valueType": "url",
-            "label": "Origin"
-          },
-          {
-            "key": "wastedMs",
-            "valueType": "timespanMs",
-            "label": "Potential Savings"
-          }
-        ],
+        "headings": [],
         "items": [],
         "overallSavingsMs": 0
       }
@@ -1881,28 +1859,7 @@
       "warnings": [],
       "details": {
         "type": "opportunity",
-        "headings": [
-          {
-            "key": "url",
-            "valueType": "thumbnail",
-            "label": ""
-          },
-          {
-            "key": "url",
-            "valueType": "url",
-            "label": "URL"
-          },
-          {
-            "key": "totalBytes",
-            "valueType": "bytes",
-            "label": "Original"
-          },
-          {
-            "key": "wastedBytes",
-            "valueType": "bytes",
-            "label": "Potential Savings"
-          }
-        ],
+        "headings": [],
         "items": [],
         "overallSavingsMs": 0,
         "overallSavingsBytes": 0
@@ -1975,23 +1932,7 @@
       "displayValue": "",
       "details": {
         "type": "opportunity",
-        "headings": [
-          {
-            "key": "url",
-            "valueType": "url",
-            "label": "URL"
-          },
-          {
-            "key": "totalBytes",
-            "valueType": "bytes",
-            "label": "Original"
-          },
-          {
-            "key": "wastedBytes",
-            "valueType": "bytes",
-            "label": "Potential Savings"
-          }
-        ],
+        "headings": [],
         "items": [],
         "overallSavingsMs": 0,
         "overallSavingsBytes": 0
@@ -2050,23 +1991,7 @@
       "displayValue": "",
       "details": {
         "type": "opportunity",
-        "headings": [
-          {
-            "key": "url",
-            "valueType": "url",
-            "label": "URL"
-          },
-          {
-            "key": "totalBytes",
-            "valueType": "bytes",
-            "label": "Original"
-          },
-          {
-            "key": "wastedBytes",
-            "valueType": "bytes",
-            "label": "Potential Savings"
-          }
-        ],
+        "headings": [],
         "items": [],
         "overallSavingsMs": 0,
         "overallSavingsBytes": 0
@@ -2132,28 +2057,7 @@
       "warnings": [],
       "details": {
         "type": "opportunity",
-        "headings": [
-          {
-            "key": "url",
-            "valueType": "thumbnail",
-            "label": ""
-          },
-          {
-            "key": "url",
-            "valueType": "url",
-            "label": "URL"
-          },
-          {
-            "key": "totalBytes",
-            "valueType": "bytes",
-            "label": "Original"
-          },
-          {
-            "key": "wastedBytes",
-            "valueType": "bytes",
-            "label": "Potential Savings"
-          }
-        ],
+        "headings": [],
         "items": [],
         "overallSavingsMs": 0,
         "overallSavingsBytes": 0
@@ -2216,28 +2120,7 @@
       "warnings": [],
       "details": {
         "type": "opportunity",
-        "headings": [
-          {
-            "key": "url",
-            "valueType": "thumbnail",
-            "label": ""
-          },
-          {
-            "key": "url",
-            "valueType": "url",
-            "label": "URL"
-          },
-          {
-            "key": "totalBytes",
-            "valueType": "bytes",
-            "label": "Original"
-          },
-          {
-            "key": "wastedBytes",
-            "valueType": "bytes",
-            "label": "Potential Savings"
-          }
-        ],
+        "headings": [],
         "items": [],
         "overallSavingsMs": 0,
         "overallSavingsBytes": 0
@@ -2253,23 +2136,7 @@
       "displayValue": "",
       "details": {
         "type": "opportunity",
-        "headings": [
-          {
-            "key": "url",
-            "valueType": "url",
-            "label": "URL"
-          },
-          {
-            "key": "totalBytes",
-            "valueType": "bytes",
-            "label": "Transfer Size"
-          },
-          {
-            "key": "wastedBytes",
-            "valueType": "bytes",
-            "label": "Byte Savings"
-          }
-        ],
+        "headings": [],
         "items": [],
         "overallSavingsMs": 0,
         "overallSavingsBytes": 0

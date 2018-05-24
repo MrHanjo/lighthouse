@@ -135,7 +135,7 @@ class Audit {
   static makeOpportunityDetails(headings, items, overallSavingsMs, overallSavingsBytes) {
     return {
       type: 'opportunity',
-      headings,
+      headings: items.length === 0 ? [] : headings,
       items,
       overallSavingsMs,
       overallSavingsBytes,

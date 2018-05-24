@@ -59,7 +59,7 @@ class DetailsRenderer {
         // @ts-ignore - TODO(bckenny): Fix type hierarchy
         return this._renderTable(/** @type {TableDetailsJSON} */ (details));
       case 'code':
-        return this._renderCode(/** @type {StringDetailsJSON} */ (details));
+        return this._renderCode(/** @type {DetailsJSON} */ (details));
       case 'node':
         return this.renderNode(/** @type {NodeDetailsJSON} */(details));
       case 'criticalrequestchain':
