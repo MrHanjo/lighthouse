@@ -101,14 +101,14 @@ function applyBrowserifyTransforms(bundle) {
 
 gulp.task('browserify-lighthouse', () => {
   return gulp.src([
-    'app/src/lighthouse-background.js',
+    'app/src/bundle-entry.js',
     'app/src/extension-background.js',
   ], {read: false})
     .pipe(tap(file => {
       let bundle = browserify(file.path); // , {debug: true}); // for sourcemaps
       bundle = applyBrowserifyTransforms(bundle);
 
-      // lighthouse-background will need some additional transforms, ignores and requires…
+      // scripts will need some additional transforms, ignores and requires…
 
       // Do the additional transform to convert references of devtools-timeline-model
       // to the modified version internal to Lighthouse.
@@ -121,7 +121,7 @@ gulp.task('browserify-lighthouse', () => {
       .ignore('pako/lib/zlib/inflate.js');
 
       // Prevent the DevTools background script from getting the stringified HTML.
-      if (/lighthouse-background/.test(file.path)) {
+      if (/bundle-entry/.test(file.path)) {
         bundle.ignore(require.resolve('../lighthouse-core/report/html/html-report-assets.js'));
       }
 
@@ -184,7 +184,7 @@ gulp.task('compilejs', () => {
   };
 
   return gulp.src([
-    'dist/scripts/lighthouse-background.js',
+    'dist/scripts/bundle-entry.js',
     'dist/scripts/extension-background.js'])
     .pipe(tap(file => {
       const minified = babel.transform(file.contents.toString(), opts).code;

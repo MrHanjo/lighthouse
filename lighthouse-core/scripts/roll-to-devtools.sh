@@ -33,13 +33,13 @@ fi
 report_dir="lighthouse-core/report/html"
 fe_lh_dir="$frontend_dir/audits2/lighthouse"
 
-lh_bg_js="lighthouse-extension/dist/scripts/lighthouse-background.js"
+lh_bg_js="lighthouse-extension/dist/scripts/bundle-entry.js"
 lh_worker_dir="$frontend_dir/audits2_worker/lighthouse"
 
 # copy report files
 cp -pPR $report_dir/{report-styles.css,templates.html,renderer} "$fe_lh_dir"
 echo -e "\033[32m ✓\033[39m Report renderer files copied."
 
-# copy lighthouse-background (potentially stale)
+# copy bundle-entry (potentially stale)
 cp -pPR "$lh_bg_js" "$lh_worker_dir/lighthouse-background.js"
-echo -e "\033[96m ✓\033[39m (Potentially stale) lighthouse-background copied."
+echo -e "\033[96m ✓\033[39m (Potentially stale) lighthouse bundle-entry copied."
