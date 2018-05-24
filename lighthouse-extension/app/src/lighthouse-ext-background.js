@@ -5,7 +5,7 @@
  */
 'use strict';
 
-const background = require('./bundle-entry');
+const background = require('./lighthouse-background');
 
 const ExtensionProtocol = require('../../../lighthouse-core/gather/connections/extension');
 const log = require('lighthouse-logger');

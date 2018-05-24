@@ -82,7 +82,7 @@ gulp.task('chromeManifest', () => {
   const manifestOpts = {
     buildnumber: false,
     background: {
-      target: 'scripts/extension-background.js',
+      target: 'scripts/lighthouse-ext-background.js',
     },
   };
   return gulp.src('app/manifest.json')
@@ -101,8 +101,8 @@ function applyBrowserifyTransforms(bundle) {
 
 gulp.task('browserify-lighthouse', () => {
   return gulp.src([
-    'app/src/bundle-entry.js',
-    'app/src/extension-background.js',
+    'app/src/lighthouse-background.js',
+    'app/src/lighthouse-ext-background.js',
   ], {read: false})
     .pipe(tap(file => {
       let bundle = browserify(file.path); // , {debug: true}); // for sourcemaps
@@ -121,7 +121,7 @@ gulp.task('browserify-lighthouse', () => {
       .ignore('pako/lib/zlib/inflate.js');
 
       // Prevent the DevTools background script from getting the stringified HTML.
-      if (/bundle-entry/.test(file.path)) {
+      if (/lighthouse-background/.test(file.path)) {
         bundle.ignore(require.resolve('../lighthouse-core/report/html/html-report-assets.js'));
       }
 
@@ -184,8 +184,8 @@ gulp.task('compilejs', () => {
   };
 
   return gulp.src([
-    'dist/scripts/bundle-entry.js',
-    'dist/scripts/extension-background.js'])
+    'dist/scripts/lighthouse-background.js',
+    'dist/scripts/lighthouse-ext-background.js'])
     .pipe(tap(file => {
       const minified = babel.transform(file.contents.toString(), opts).code;
       file.contents = new Buffer(minified);

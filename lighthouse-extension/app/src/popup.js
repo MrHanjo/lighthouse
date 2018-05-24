@@ -5,7 +5,7 @@
  */
 'use strict';
 
-/** @typedef {typeof import('./extension-background.js') & {console: typeof console}} BackgroundPage */
+/** @typedef {typeof import('./lighthouse-ext-background.js') & {console: typeof console}} BackgroundPage */
 
 /**
  * Error strings that indicate a problem in how Lighthouse was run, not in
@@ -222,7 +222,7 @@ async function initPopup() {
 
   /**
    * Really the Window of the background page, but since we only want what's exposed
-   * on window in extension-background.js, use its module API as the type.
+   * on window in lighthouse-ext-background.js, use its module API as the type.
    * @type {BackgroundPage}
    */
   const background = await new Promise(resolve => chrome.runtime.getBackgroundPage(resolve));

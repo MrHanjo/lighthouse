@@ -93,8 +93,8 @@ git push --tags
 echo "Rebuild extension and viewer to get the latest, tagged master commit"
 yarn build-all;
 
-# zip the extension files, but remove bundle-entry as it's already bundled
-cd lighthouse-extension; command rm -f dist/scripts/bundle-entry.js; gulp package; cd ..
+# zip the extension files, but remove lh-background as it's not needed
+cd lighthouse-extension; command rm -f dist/scripts/lighthouse-background.js; gulp package; cd ..
 echo "Go here: https://chrome.google.com/webstore/developer/edit/blipmdconlkpinefehnmjammfjpmpbjk "
 echo "Upload the package zip to CWS dev dashboard"
 
