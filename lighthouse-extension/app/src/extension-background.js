@@ -191,14 +191,13 @@ if ('chrome' in window && chrome.runtime) {
 }
 
 if (typeof module !== 'undefined' && module.exports) {
-  module.exports = {
-    runLighthouseInExtension,
-    getDefaultCategories: background.getDefaultCategories,
-    isRunning,
-    listenForStatus,
-    saveSettings,
-    loadSettings,
-  };
+  // We don't want tsc to infer an index type, so use exports intest of module.exports.
+  exports.runLighthouseInExtension = runLighthouseInExtension;
+  exports.getDefaultCategories = background.getDefaultCategories;
+  exports.isRunning = isRunning;
+  exports.listenForStatus = listenForStatus;
+  exports.saveSettings = saveSettings;
+  exports.loadSettings = loadSettings;
 }
 
 // Expose on window for extension, other consumers of file.
