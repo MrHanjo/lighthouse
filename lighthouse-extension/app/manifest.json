@@ -11,7 +11,7 @@
   "default_locale": "en",
   "background": {
     "scripts": [
-      "scripts/lighthouse-ext-background.js"
+      "scripts/extension-background.js"
     ],
     "persistent": false
   },

@@ -5,7 +5,7 @@
  */
 'use strict';
 
-/** @typedef {typeof import('./lighthouse-ext-background.js')} BackgroundPage */
+/** @typedef {typeof import('./extension-background.js')} BackgroundPage */
 
 /**
  * Error strings that indicate a problem in how Lighthouse was run, not in
