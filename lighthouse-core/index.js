@@ -27,24 +27,25 @@ const Config = require('./config/config');
 
 /**
  * @param {string} url
- * @param {LH.Flags} flags
+ * @param {LH.Flags=} flags
  * @param {LH.Config.Json|undefined} configJSON
  * @return {Promise<LH.RunnerResult|undefined>}
  */
-function lighthouse(url, flags, configJSON) {
-  return Promise.resolve().then(_ => {
-    // set logging preferences, assume quiet
-    flags.logLevel = flags.logLevel || 'error';
-    log.setLevel(flags.logLevel);
+async function lighthouse(url, flags, configJSON) {
+  // TODO(bckenny): figure out Flags types.
+  flags = flags || /** @type {LH.Flags} */ ({});
 
-    // Use ConfigParser to generate a valid config file
-    // @ts-ignore - TODO(bckenny): type checking for Config
-    const config = /** @type {LH.Config} */ (new Config(configJSON, flags));
-    const connection = new ChromeProtocol(flags.port, flags.hostname);
+  // set logging preferences, assume quiet
+  flags.logLevel = flags.logLevel || 'error';
+  log.setLevel(flags.logLevel);
 
-    // kick off a lighthouse run
-    return Runner.run(connection, {url, config});
-  });
+  // Use ConfigParser to generate a valid config file
+  // @ts-ignore - TODO(bckenny): type checking for Config
+  const config = /** @type {LH.Config} */ (new Config(configJSON, flags));
+  const connection = new ChromeProtocol(flags.port, flags.hostname);
+
+  // kick off a lighthouse run
+  return Runner.run(connection, {url, config});
 }
 
 lighthouse.getAuditList = Runner.getAuditList;

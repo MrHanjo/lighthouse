@@ -49,21 +49,21 @@ function getChromeVersion() {
 }
 
 function showRunningSubpage() {
-  find('.status', document).classList.add(subpageVisibleClass);
+  find('.status').classList.add(subpageVisibleClass);
 }
 
 function hideRunningSubpage() {
-  find('.status', document).classList.remove(subpageVisibleClass);
+  find('.status').classList.remove(subpageVisibleClass);
 }
 
 /**
  * Guaranteed context.querySelector. Always returns an element or throws if
  * nothing matches query.
  * @param {string} query
- * @param {ParentNode} context
+ * @param {ParentNode=} context
  * @return {HTMLElement}
  */
-function find(query, context) {
+function find(query, context = document) {
   /** @type {?HTMLElement} */
   const result = context.querySelector(query);
   if (result === null) {
@@ -113,8 +113,8 @@ function logStatus([, message, details]) {
     const hundredPlusChars = details.replace(/(.{100}.*?),.*/, '$1…');
     details = hundredPlusChars;
   }
-  find('.status__msg', document).textContent = message;
-  const statusDetailsMessageEl = find('.status__detailsmsg', document);
+  find('.status__msg').textContent = message;
+  const statusDetailsMessageEl = find('.status__detailsmsg');
   statusDetailsMessageEl.textContent = details;
 }
 
@@ -149,7 +149,7 @@ function createOptionItem(text, id, isChecked) {
 async function onGenerateReportButtonClick(background, settings) {
   showRunningSubpage();
 
-  const feedbackEl = find('.feedback', document);
+  const feedbackEl = find('.feedback');
   feedbackEl.textContent = '';
 
   const {selectedCategories, useDevTools} = settings;
@@ -201,7 +201,7 @@ function generateOptionsList(background, selectedCategories) {
     frag.appendChild(createOptionItem(category.title, category.id, isChecked));
   });
 
-  const optionsList = find('.options__list', document);
+  const optionsList = find('.options__list');
   optionsList.appendChild(frag);
 }
 
@@ -217,7 +217,7 @@ async function initPopup() {
     siteURL = new URL(tabs[0].url || '');
 
     // Show the user what URL is going to be tested.
-    find('header h2', document).textContent = siteURL.origin;
+    find('header h2').textContent = siteURL.origin;
   });
 
   /**
@@ -242,12 +242,12 @@ async function initPopup() {
   // generate checkboxes from saved settings
   background.loadSettings().then(settings => {
     generateOptionsList(background, settings.selectedCategories);
-    const lanternCheck = /** @type {HTMLInputElement} */ (find('#lantern-checkbox', document));
+    const lanternCheck = /** @type {HTMLInputElement} */ (find('#lantern-checkbox'));
     lanternCheck.checked = !settings.useDevTools;
   });
 
   // bind throttling control button
-  const lanternCheckbox = /** @type {HTMLInputElement} */ (find('lantern-checkbox', document));
+  const lanternCheckbox = /** @type {HTMLInputElement} */ (find('lantern-checkbox'));
   lanternCheckbox.addEventListener('change', async () => {
     const settings = await background.loadSettings();
     settings.useDevTools = !lanternCheckbox.checked;
@@ -255,7 +255,7 @@ async function initPopup() {
   });
 
   // bind Generate Report button
-  const generateReportButton = find('generate-report', document);
+  const generateReportButton = find('generate-report');
   generateReportButton.addEventListener('click', () => {
     background.loadSettings().then(settings => {
       onGenerateReportButtonClick(background, settings);
@@ -263,14 +263,14 @@ async function initPopup() {
   });
 
   // bind View Options button
-  const generateOptionsEl = find('configure-options', document);
-  const optionsEl = find('.options', document);
+  const generateOptionsEl = find('configure-options');
+  const optionsEl = find('.options');
   generateOptionsEl.addEventListener('click', () => {
     optionsEl.classList.add(subpageVisibleClass);
   });
 
   // bind Save Options button
-  const okButton = find('ok', document);
+  const okButton = find('ok');
   okButton.addEventListener('click', () => {
     // Save settings when options page is closed.
     const checkboxes = /** @type {NodeListOf<HTMLInputElement>} */

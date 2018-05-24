@@ -73,6 +73,7 @@ function listenForStatus(listenCallback) {
 }
 
 if (typeof module !== 'undefined' && module.exports) {
+  // export for lighthouse-ext-background to require (via browserify).
   module.exports = {
     runLighthouseForConnection,
     runLighthouseInWorker,
